@@ -2,8 +2,7 @@ library(easycsv)
 library(ggplot2)
 library(reshape2)
 library(dplyr)
-
-
+library(tidyr)
 
 loadcsv_multi(directory = "data")
 
@@ -27,3 +26,18 @@ FatalCrashData2017 <- change_rownames(FatalCrashData2017, "2017")
 FatalCrashData <- Reduce(function(x,y) merge(x,y,by="state",all=TRUE) ,list(FatalCrashData2010,
                   FatalCrashData2011,FatalCrashData2012,FatalCrashData2013,FatalCrashData2014,
                   FatalCrashData2015,FatalCrashData2016,FatalCrashData2017))
+
+over_time_func <- function(state_name, age_group, input) {
+  state_year_data <- input %>%
+    filter(state == state_name) %>%
+    select(state, contains(age_group))
+
+  state_year_data <- state_year_data %>% 
+    gather(key="year", value = "fatalities", -state) %>%
+    mutate(year = sub("^[^.]*", "", year)) %>%
+    mutate(year = sub("\\.", "", year))
+  
+  ggplot(state_year_data, aes(x = year, y = fatalities)) + geom_line(group = 1, color = "red") + geom_point(color = "red") 
+}
+
+over_time_func("Washington", "5-9", FatalCrashData)
