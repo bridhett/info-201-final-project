@@ -3,41 +3,27 @@ library(ggplot2)
 library(reshape2)
 library(dplyr)
 
-## Contains the function to make a bar graph with (x = ages, y = number of death).
+
 
 loadcsv_multi(directory = "data")
 
-change_rownames <- function(file_name) {
-  names(file_name) <- c("state", "<5", "5-9", "10-15", "16-20", "21-24", "25-34", "35-44",
-                                 "45-54", "55-64", "65-74", ">74", "unknown", "total_killed")
+change_rownames <- function(file_name, year) {
+  names(file_name) <- c("state", paste0("<5.", year), paste0("5-9.", year), paste0("10-15.", year), paste0("16-20.", year), paste0("21-24.", year), paste0("25-34.", year), 
+                        paste0("35-44.", year),paste0("45-54.", year), paste0("55-64.", year), paste0("65-74.", year), paste0(">74.", year), paste0("unknown.", year), paste0("total_killed.", year))
   
   return(file_name)
 }
 
-FatalCrashData2010 <- change_rownames(FatalCrashData2010)
-FatalCrashData2011 <- change_rownames(FatalCrashData2011)
-FatalCrashData2012 <- change_rownames(FatalCrashData2012)
-FatalCrashData2013 <- change_rownames(FatalCrashData2013)
-FatalCrashData2014 <- change_rownames(FatalCrashData2014)
-FatalCrashData2015 <- change_rownames(FatalCrashData2015)
-FatalCrashData2016 <- change_rownames(FatalCrashData2016)
-FatalCrashData2017 <- change_rownames(FatalCrashData2017)
+FatalCrashData2010 <- change_rownames(FatalCrashData2010, "2010")
+FatalCrashData2011 <- change_rownames(FatalCrashData2011, "2011")
+FatalCrashData2012 <- change_rownames(FatalCrashData2012, "2012")
+FatalCrashData2013 <- change_rownames(FatalCrashData2013, "2013")
+FatalCrashData2014 <- change_rownames(FatalCrashData2014, "2014")
+FatalCrashData2015 <- change_rownames(FatalCrashData2015, "2015")
+FatalCrashData2016 <- change_rownames(FatalCrashData2016, "2016")
+FatalCrashData2017 <- change_rownames(FatalCrashData2017, "2017")
 
-## data -> choosing a table from above
-## state_name -> enter a string of state name
-make_bar_graph <- function(data, state_name) {
-  melted_data <- melt(data, id.vars = "state", measure.vars = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", "35-44",
-                                                                                   "45-54", "55-64", "65-74", ">74", "unknown"))
-  melted_data <- filter(melted_data, state == state_name)
 
-  melted_data$value <- as.numeric(melted_data$value)
-
-  cols <- c("blue", "red")[(melted_data$value > max(melted_data$value)/2) + 1] 
-  
-  barplot(melted_data$value, main=paste0("Number of death based on ages in ", state_name),
-        names.arg=melted_data$variable, cex.names = 0.7, yaxp=c(0, round(max(melted_data$value), -1), 5),
-        col = cols)
-  
-}
-
-## plot <- make_bar_graph(FatalCrashData2011, "Georgia")
+FatalCrashData <- Reduce(function(x,y) merge(x,y,by="state",all=TRUE) ,list(FatalCrashData2010,
+                  FatalCrashData2011,FatalCrashData2012,FatalCrashData2013,FatalCrashData2014,
+                  FatalCrashData2015,FatalCrashData2016,FatalCrashData2017))
