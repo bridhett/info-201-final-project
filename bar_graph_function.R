@@ -1,27 +1,26 @@
 library(easycsv)
 library(ggplot2)
 library(reshape2)
-library(dplyr)
 
 ## Contains the function to make a bar graph with (x = ages, y = number of death).
 
 loadcsv_multi(directory = "data")
 
-change_rownames <- function(file_name) {
+rename_rows <- function(file_name) {
   names(file_name) <- c("state", "<5", "5-9", "10-15", "16-20", "21-24", "25-34", "35-44",
                                  "45-54", "55-64", "65-74", ">74", "unknown", "total_killed")
   
   return(file_name)
 }
 
-FatalCrashData2010 <- change_rownames(FatalCrashData2010)
-FatalCrashData2011 <- change_rownames(FatalCrashData2011)
-FatalCrashData2012 <- change_rownames(FatalCrashData2012)
-FatalCrashData2013 <- change_rownames(FatalCrashData2013)
-FatalCrashData2014 <- change_rownames(FatalCrashData2014)
-FatalCrashData2015 <- change_rownames(FatalCrashData2015)
-FatalCrashData2016 <- change_rownames(FatalCrashData2016)
-FatalCrashData2017 <- change_rownames(FatalCrashData2017)
+CrashData2010 <- rename_rows(FatalCrashData2010)
+CrashData2011 <- rename_rows(FatalCrashData2011)
+CrashData2012 <- rename_rows(FatalCrashData2012)
+CrashData2013 <- rename_rows(FatalCrashData2013)
+CrashData2014 <- rename_rows(FatalCrashData2014)
+CrashData2015 <- rename_rows(FatalCrashData2015)
+CrashData2016 <- rename_rows(FatalCrashData2016)
+CrashData2017 <- rename_rows(FatalCrashData2017)
 
 ## data -> choosing a table from above
 ## state_name -> enter a string of state name
@@ -29,7 +28,7 @@ make_bar_graph <- function(data, state_name) {
   melted_data <- melt(data, id.vars = "state", measure.vars = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", "35-44",
                                                                                    "45-54", "55-64", "65-74", ">74", "unknown"))
   melted_data <- filter(melted_data, state == state_name)
-
+  
   melted_data$value <- as.numeric(melted_data$value)
 
   cols <- c("blue", "red")[(melted_data$value > max(melted_data$value)/2) + 1] 
@@ -40,4 +39,4 @@ make_bar_graph <- function(data, state_name) {
   
 }
 
-## plot <- make_bar_graph(FatalCrashData2011, "Georgia")
+## plot <- make_bar_graph(CrashData2011, "Georgia")
