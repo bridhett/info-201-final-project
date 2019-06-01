@@ -31,7 +31,7 @@ make_bar_graph <- function(data, state_name) {
   
   melted_data$value <- as.numeric(melted_data$value)
 
-  cols <- c("blue", "red")[(melted_data$value > max(melted_data$value)/2) + 1] 
+  cols <- c("green", "red")[(melted_data$value > max(melted_data$value)/2) + 1] 
   
   barplot(melted_data$value, main=paste0("Number of death based on ages in ", state_name),
         names.arg=melted_data$variable, cex.names = 0.7, yaxp=c(0, round(max(melted_data$value), -1), 5),
@@ -39,4 +39,4 @@ make_bar_graph <- function(data, state_name) {
   
 }
 
-#plot <- make_bar_graph(CrashData2011, "Georgia")
+##plot <- make_bar_graph(CrashData2011, "Georgia")

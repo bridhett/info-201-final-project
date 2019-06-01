@@ -8,22 +8,21 @@
 #
 
 library(shiny)
-
+source('R/bar_graph_function.R')
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   sidebarLayout(
-    sidebarPanel(selectInput(inputId = "selected_state", 
-                label = "States", 
-                choices = sort(FatalCrashData$state), 
-                multiple = FALSE, selected = "AL"), 
+    sidebarPanel(selectInput(inputId = "states", 
+                label = "Choosing a state:", 
+                choices = CrashData2010$state), 
                 
-                selectInput(inputId = "selected_ageGroup",
-                            label = "Age Groups",
-                            choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
-                                        "35-44", "45-54", "55-64", "65-74", ">74", "unknown", 
-                                        "total_killed"),
-                            multiple = FALSE)),
-    mainPanel(plotOutput("line_chart")))
+                sliderInput(inputId = "year",
+                            label = "Choosing a year:",
+                            min = 2010,
+                            max = 2017,
+                            value = 1,
+                            sep = "")),
+    mainPanel(plotOutput("bargraph")))
   
   
 ))

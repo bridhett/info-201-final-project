@@ -9,14 +9,11 @@
 
 library(shiny)
 source("R/bar_graph_function.R")
-source("R/over_time_function.R")
-source("R/map_function.R")
-source("R/format_data.R")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-  output$line_chart <- renderPlot({
-    over_time_func(input$selected_state, input$selected_ageGroup, FatalCrashData)
+  output$bargraph <- renderPlot({
+    make_bar_graph(eval(parse(text = paste0("CrashData", input$year))), input$states)
     
   })
   
