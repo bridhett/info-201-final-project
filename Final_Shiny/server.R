@@ -17,7 +17,7 @@ source("R/format_data.R")
 shinyServer(function(input, output) {
 
   output$bargraph <- renderPlot({
-    make_bar_graph(eval(parse(text = paste0("CrashData", input$year))), input$states)
+    make_bar_graph(eval(parse(text = paste0("CrashData", input$years))), input$states)
   })
   
   output$mapPlot <- renderPlot({
@@ -28,8 +28,6 @@ shinyServer(function(input, output) {
   output$line_chart <- renderPlot({
     over_time_func(input$selected_state, input$selected_ageGroup, FatalCrashData)
 
-    
   })
 })
-  
 

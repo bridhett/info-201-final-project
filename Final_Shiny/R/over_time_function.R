@@ -36,6 +36,6 @@ over_time_func <- function(state_name, age_group, input) {
     mutate(year = sub("^[^.]*", "", year)) %>%
     mutate(year = sub("\\.", "", year))
   
-  ggplot(state_year_data, aes(x = year, y = fatalities)) + geom_line(group = 1, color = "red") + geom_point(color = "red") 
+  ggplot(state_year_data, aes(x = year, y = fatalities)) + geom_line(group = 1, color = "red") + geom_point(color = "red") + ggtitle(paste("Fatalities over time for the", age_group, "age group"))
 }
 over_time_func("Florida", "unknown", FatalCrashData)

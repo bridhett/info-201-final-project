@@ -39,4 +39,5 @@ make_bar_graph <- function(data, state_name) {
   
 }
 
+
 ##plot <- make_bar_graph(CrashData2011, "Georgia")
