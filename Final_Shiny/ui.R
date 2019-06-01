@@ -44,7 +44,7 @@ shinyUI(fluidPage(
       tabsetPanel(
         tabPanel("Mapped Data", plotOutput("mapPlot")),
         tabPanel("Bar Graph", plotOutput("bargraph")),
-        tabPanel("Line Chart", plotOutput("line_chart"))
+        tabPanel("Line Chart", h3("         "), plotOutput("line_chart"))
       )
     )
   )
