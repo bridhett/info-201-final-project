@@ -8,21 +8,54 @@
 #
 
 library(shiny)
+source("R/format_data.R")
+source("R/over_time_function.R")
 source('R/bar_graph_function.R')
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   sidebarLayout(
-    sidebarPanel(selectInput(inputId = "states", 
-                label = "Choosing a state:", 
-                choices = CrashData2010$state), 
+    sidebarPanel(
+      sliderInput("year",
+                  "Choose a Year:",
+                  min = 2010,
+                  max = 2017,
+                  value = 1,
+                  sep = ""),
+      
+      selectInput("ages", "Choose an Age Group:",
+                  choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
+                              "35-44", "45-54", "55-64", "65-74", ">74", 
+                              "unknown")),
+      
+      selectInput(inputId = "selected_state", 
+                label = "States", 
+                choices = sort(FatalCrashData$state), 
+                multiple = FALSE, selected = "AL"), 
                 
-                sliderInput(inputId = "year",
-                            label = "Choosing a year:",
-                            min = 2010,
-                            max = 2017,
-                            value = 1,
-                            sep = "")),
-    mainPanel(plotOutput("bargraph")))
-  
-  
+                selectInput(inputId = "selected_ageGroup",
+                            label = "Age Groups",
+                            choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
+                                        "35-44", "45-54", "55-64", "65-74", ">74", "unknown", 
+                                        "total_killed"),
+                            multiple = FALSE),
+      selectInput(inputId = "states", 
+                  label = "Choosing a state:", 
+                  choices = CrashData2010$state), 
+      
+      sliderInput(inputId = "year",
+                  label = "Choosing a year:",
+                  min = 2010,
+                  max = 2017,
+                  value = 1,
+                  sep = "")
+                ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Mapped Data", plotOutput("mapPlot")),
+        tabPanel("Bar Graph", plotOutput("bargraph")),
+        tabPanel("Line Chart", plotOutput("line_chart"))
+      )
+    )
+  )
 ))
