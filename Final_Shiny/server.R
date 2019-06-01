@@ -23,7 +23,6 @@ shinyServer(function(input, output) {
   
   output$line_chart <- renderPlot({
     over_time_func(input$selected_state, input$selected_ageGroup, FatalCrashData)
-    
   })
   
 })
