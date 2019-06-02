@@ -16,19 +16,17 @@ source("R/summ_stat_first.R")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-
+  
+  output$mapPlot <- renderPlot({
+    getMap(input$year, input$ages)
+  })
+  
   output$bargraph <- renderPlot({
     make_bar_graph(eval(parse(text = paste0("CrashData", input$years))), input$states)
   })
   
-  output$mapPlot <- renderPlot({
-    getMap(input$year, input$ages)
-    
-  })
-  
   output$line_chart <- renderPlot({
     over_time_func(input$selected_state, input$selected_ageGroup, FatalCrashData)
-
   })
   
   output$summ_stat_1 <- renderText({
