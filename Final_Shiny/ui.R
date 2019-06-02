@@ -48,7 +48,7 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                               
                               selectInput(inputId = "states", 
                                           label = "Choose a state:", 
-                                          choices = CrashData2010$state)),
+                                          choices = (CrashData2010[-c(52:53), ]$state))),
                               mainPanel(plotOutput("bargraph")))
                    ),
                    
@@ -66,5 +66,25 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                                                       "total_killed"),
                                           multiple = FALSE)),
                               mainPanel(h3("         "), plotOutput("line_chart")))
-                   )
+                   ),
+                   
+                   navbarMenu("Summary Stats",
+                     tabPanel("State Rank",
+                              fluidRow(column(12,
+                                              h1("State Rankings Per Year"),
+                                              p("ed on age groups."))),
+                              hr(),
+                              fluidRow(sidebarPanel(
+                                sliderInput("yr",
+                                            "Choose a Year:",
+                                            min = 2010,
+                                            max = 2017,
+                                            value = 1,
+                                            sep = ""),
+                                
+                                selectInput("st", "Select States:",
+                                            multiple = TRUE,
+                                            data_2010[-c(52:53), ]$state)),
+                                mainPanel(tableOutput("ranks")))
+                   ))
 ))

@@ -12,6 +12,7 @@ source("R/bar_graph_function.R")
 source("R/over_time_function.R")
 source("R/map_function.R")
 source("R/format_data.R")
+source("R/rank_function.R")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -26,6 +27,10 @@ shinyServer(function(input, output) {
   
   output$line_chart <- renderPlot({
     over_time_func(input$selected_state, input$selected_ageGroup, FatalCrashData)
+  })
+  
+  output$ranks <- renderTable({
+    makeRanks(input$yr, input$st)
   })
 })
 
