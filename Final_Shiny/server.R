@@ -13,7 +13,7 @@ source("R/over_time_function.R")
 source("R/map_function.R")
 source("R/format_data.R")
 source("R/rank_function.R")
-
+source("R/summ_stat_first.R")
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
@@ -29,8 +29,13 @@ shinyServer(function(input, output) {
     over_time_func(input$selected_state, input$selected_ageGroup, FatalCrashData)
   })
   
+  output$summ_stat_1 <- renderText({
+    d <- eval(parse(text = paste0("CrashData", input$year_summ_1)))
+    first_summ_stat(input$max_min_radio, input$sel_age_summ, input$year_summ_1, d)
+  })
+  
   output$ranks <- renderTable({
     makeRanks(input$yr, input$st)
   })
+  
 })
-
