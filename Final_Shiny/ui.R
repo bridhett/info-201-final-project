@@ -10,7 +10,7 @@
 library(shiny)
 source("R/format_data.R")
 source("R/over_time_function.R")
-
+source("R/bar_graph_function.R")
 # Define UI for application that draws a histogram
 shinyUI(navbarPage("Fatal Car Crashes in the USA",
                    tabPanel("Map",
