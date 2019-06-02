@@ -35,7 +35,7 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                    
                    tabPanel("Bar Graph",
                             fluidRow(column(12,
-                                            h1("Nation Wide Fatal Car Crashes"),
+                                            h1("Fatal Car Crashes Per State"),
                                             p("A bar graph showing number of death in different years and states based on age groups."))),
                             hr(),
                             fluidRow(sidebarPanel(
