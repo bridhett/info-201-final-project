@@ -70,7 +70,7 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                    ),
                    
                    navbarMenu("Summary Stats",
-                              tabPanel("Most Deaths",
+                              tabPanel("Case summary",
                                        fluidRow(sidebarPanel(
                                          selectInput(inputId = "sel_age_summ",
                                                      label = "Age Group",
@@ -89,25 +89,23 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                                                      value = 2010,
                                                      sep = "")
                                        ),
-                                       mainPanel(h1("Max and Min fatalities based off of age and year"),h3(textOutput("summ_stat_1"))))),
+                                       mainPanel(h1("Max and Min fatalities based off of age and year"),p(textOutput("summ_stat_1")))), 
+                                       hr(),
+                                       fluidRow(sidebarPanel(
+                                         sliderInput("yr",
+                                                     "Choose a Year:",
+                                                     min = 2010,
+                                                     max = 2017,
+                                                     value = 1,
+                                                     sep = ""),
+                                         
+                                         selectInput("st", "Select States:",
+                                                     multiple = TRUE,
+                                                     data_2010[-c(52:53), ]$state)),
+                                         mainPanel(h1("State rankings per year"),tableOutput("ranks")))
+                                       ),
+                              tabPanel("Project conclusion")
                               
-                     tabPanel("State Rank",
-                              fluidRow(column(12,
-                                              h1("State Rankings Per Year"),
-                                              p("ed on age groups."))),
-                              hr(),
-                              fluidRow(sidebarPanel(
-                                sliderInput("yr",
-                                            "Choose a Year:",
-                                            min = 2010,
-                                            max = 2017,
-                                            value = 1,
-                                            sep = ""),
-                                
-                                selectInput("st", "Select States:",
-                                            multiple = TRUE,
-                                            data_2010[-c(52:53), ]$state)),
-                                mainPanel(tableOutput("ranks")))
-                   ))
-))
+
+)))
 
