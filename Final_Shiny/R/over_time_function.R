@@ -7,8 +7,11 @@ library(tidyr)
 loadcsv_multi(directory = "data")
 
 change_rownames <- function(file_name, year) {
-  names(file_name) <- c("state", paste0("<5.", year), paste0("5-9.", year), paste0("10-15.", year), paste0("16-20.", year), paste0("21-24.", year), paste0("25-34.", year), 
-                        paste0("35-44.", year),paste0("45-54.", year), paste0("55-64.", year), paste0("65-74.", year), paste0(">74.", year), paste0("unknown.", year), paste0("total_killed.", year))
+  names(file_name) <- c("state", paste0("<5.", year), paste0("5-9.", year), 
+                        paste0("10-15.", year), paste0("16-20.", year), paste0("21-24.", year), 
+                        paste0("25-34.", year), paste0("35-44.", year), paste0("45-54.", year), 
+                        paste0("55-64.", year), paste0("65-74.", year), paste0(">74.", year), 
+                        paste0("unknown.", year), paste0("total_killed.", year))
   
   return(file_name)
 }
@@ -36,6 +39,10 @@ over_time_func <- function(state_name, age_group, input) {
     mutate(year = sub("^[^.]*", "", year)) %>%
     mutate(year = sub("\\.", "", year))
   
-  ggplot(state_year_data, aes(x = year, y = fatalities)) + geom_line(group = 1, color = "red") + geom_point(color = "red") + ggtitle(paste("Fatalities over time for the", age_group, "age group"))
+  ggplot(state_year_data, aes(x = year, y = fatalities)) + 
+    geom_line(group = 1, color =  "#e57070") + 
+    geom_point(color = "light green") +
+    labs(x = "Year", y = "Fatalities") 
 }
+
 over_time_func("Florida", "unknown", FatalCrashData)

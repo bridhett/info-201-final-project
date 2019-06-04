@@ -23,5 +23,7 @@ makeRanks <- function(year, ...) {
   
   data <- data %>%
     select(rank, state, total_killed) %>%
-    rename('total killed' = total_killed)
+    rename(Rank = rank,
+           State = state,
+           "Total Killed" = total_killed)
 }

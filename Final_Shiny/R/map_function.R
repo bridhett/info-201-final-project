@@ -4,7 +4,6 @@ library("ggplot2")
 library("fiftystater")
 library("tmap")
 library("tmaptools")
-library("leaflet")
 
 source("R/format_data.R")
 
@@ -32,16 +31,17 @@ getMap <- function(year, age_group) {
   
 ggplot(data, aes(map_id = state)) + 
     # map points to the fifty_states shape data
-    geom_map(aes(fill = fatalities), map = fifty_states) + 
-    expand_limits(x = fifty_states$long, y = fifty_states$lat) +
-    scale_fill_gradient(low= "light green", high = "#e57070", breaks = 
-                          seq(min, max, floor((max-min)/4))) +
-    theme(text=element_text(size=16,  family="serif"),
-          legend.position = "right", 
-          panel.background = element_blank()
-          ) +
-    labs(fill = "Fatalities", x = "", y = "") +
-    coord_map() +
-    scale_x_continuous(breaks = NULL) + 
-    scale_y_continuous(breaks = NULL) 
+  geom_map(aes(fill = fatalities), map = fifty_states) + 
+  expand_limits(x = fifty_states$long, y = fifty_states$lat) +
+  scale_fill_gradient(low= "light green", high = "#e57070", 
+                      breaks = seq(min, max, floor((max-min)/4))) +
+  theme(legend.position = "right", 
+        panel.background = element_blank()) +
+  borders("state") +
+  labs(fill = "Fatalities", x = "", y = "") +
+  coord_map() +
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) 
 }  
+
+getMap(2013, "21-24")

@@ -1,4 +1,8 @@
 library(dplyr)
+library(usmap)
+library(ggplot2)
+library(stringr)
+library(openintro)
 
 dooby_2010 <- read.csv("data/FatalCrashData2010.csv", stringsAsFactors = FALSE)
 
@@ -7,13 +11,15 @@ names(dooby_2010) <- c("state", "<5", "5-9", "10-15", "16-20", "21-24", "25-34",
                       "total_killed")
 
 first_summ_stat <- function(max_min, sel_age_grp, yr, d) {
+  d$total_killed <- as.numeric(gsub(",", "", d$total_killed))
+  
   d <- d %>%
     filter(state != "National", state != "Puerto Rico") %>%
     select(state, sel_age_grp)
-    
   #d <- d[order(-(d[[sel_age_grp]])),]
   if(max_min == "Max") {
     d <- d[d[[sel_age_grp]] == max(d[[sel_age_grp]]),]
+    print(d)
     list <- as.vector(d$state)
     paste(paste0(list, collapse = ", "), "had the most deaths in", yr, "with",d[1,2])
   } else {
@@ -23,5 +29,19 @@ first_summ_stat <- function(max_min, sel_age_grp, yr, d) {
   }
 }
 
-first_summ_stat("Max", "5-9", 2010, dooby_2010)
+first_summ_stat("Min", "<5", 2012, dooby_2010)
+
+getStates <- function(func){
+  text <- func
+  print(text)
+  text <- str_extract(text, dooby_2010$state)
+  text <- na.omit(text)
+  text <- state2abbr(text)
+  print(text)
+  
+  plot_usmap(include = text) +
+  theme(panel.background = element_blank())
+}
+
+getStates(first_summ_stat("Min", "<5", 2012, dooby_2010))
 

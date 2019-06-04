@@ -35,7 +35,8 @@ interactiveMap <- function(year) {
       colorscale = colz
     ) %>%
     layout(
-      title = paste(year, "US Total Killed by State"),
       geo = g
     )
 }
+
+interactiveMap(2014)

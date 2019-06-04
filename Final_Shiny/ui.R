@@ -8,114 +8,122 @@
 #
 
 library(shiny)
+library(plotly)
 source("R/format_data.R")
 source("R/over_time_function.R")
 source("R/bar_graph_function.R")
 # Define UI for application that draws a histogram
 shinyUI(navbarPage("Fatal Car Crashes in the USA",
-                   tabPanel("Map",
-                            fluidRow(includeCSS("style.css"),
-                                     sidebarPanel(
-                                             h1("Nation Wide Fatal Car Crashes"),
-                                             p("The map "),
-                                             hr(),
-                              sliderInput("year",
-                                          "Choose a Year:",
-                                          min = 2010,
-                                          max = 2017,
-                                          value = 1,
-                                          sep = ""),
-                              
-                              selectInput("ages", "Choose an Age Group:",
-                                          choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
-                                                      "35-44", "45-54", "55-64", "65-74", ">74", 
-                                                      "unknown"))),
-                              mainPanel(textOutput("title"),
-                                        plotOutput("mapPlot"))),
-                            hr(),
-                            fluidRow(sidebarPanel(
-                                       sliderInput("y",
-                                                   "Choose a Year:",
-                                                   min = 2010,
-                                                   max = 2017,
-                                                   value = 1,
-                                                   sep = "")),
-                                     mainPanel(plotlyOutput("plotly")))
-                   ),
-                   
-                   tabPanel("Bar Graph",
-                            fluidRow(column(12,
+         tabPanel("Nation Wide",
+                  fluidRow(includeCSS("style.css"),
+                           column(12,
+                           h1("Nation Wide Fatal Car Crashes"),
+                           p("The map "))),
+                           hr(),
+                  fluidRow(sidebarPanel(
+                    sliderInput("year",
+                                "Choose a Year:",
+                                min = 2010,
+                                max = 2017,
+                                value = 1,
+                                sep = ""),
+                    
+                    selectInput("ages", "Choose an Age Group:",
+                                choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
+                                            "35-44", "45-54", "55-64", "65-74", ">74", 
+                                            "unknown"))),
+                    mainPanel(h2("Fatalities Per State by Age Group and Year"),
+                              plotOutput("mapPlot"))),
+         
+                  hr(),
+                  fluidRow(sidebarPanel(
+                             sliderInput("y",
+                                         "Choose a Year:",
+                                         min = 2010,
+                                         max = 2017,
+                                         value = 1,
+                                         sep = "")),
+                           mainPanel(h2("Total Killed Per State"),
+                                     plotlyOutput("plotly")))
+         ),
+         
+         tabPanel("State Wide",
+                  fluidRow(column(12,
+                                h1("Fatal Car Crashes Per State"),
+                                p("A bar graph showing number of death in different years and states based on age groups."))),
+                  hr(),
+                  fluidRow(sidebarPanel(
+                    sliderInput("years",
+                                "Choose a Year:",
+                                min = 2010,
+                                max = 2017,
+                                value = 1,
+                                sep = ""),
+                    
+                    selectInput(inputId = "states", 
+                                label = "Choose a State:", 
+                                choices = (CrashData2010[-c(52:53), ]$state))),
+                    mainPanel(h2("Number of Deaths Per Age Group"),
+                               plotOutput("bargraph")))
+         ),
+         
+         tabPanel("Over Time",
+                  fluidRow(sidebarPanel(
+                    selectInput(inputId = "selected_state", 
+                                label = "Choose a State", 
+                                choices = sort(FatalCrashData$state), 
+                                multiple = FALSE, selected = "AL"), 
+                    
+                    selectInput(inputId = "selected_ageGroup",
+                                label = "Choose an Age Group",
+                                choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
+                                            "35-44", "45-54", "55-64", "65-74", ">74", "unknown", 
+                                            "total_killed"),
+                                multiple = FALSE)),
+                    mainPanel(h2("Fatalities from 2010 to 2017"), 
+                              plotOutput("line_chart")))
+         ),
+         
+         navbarMenu("Summary Stats",
+                    tabPanel("Case Summary",
+                             fluidRow(sidebarPanel(
+                               selectInput(inputId = "sel_age_summ",
+                                           label = "Choose an Age Group",
+                                           choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
+                                                       "35-44", "45-54", "55-64", "65-74", ">74", "unknown", 
+                                                       "total_killed"),
+                                           multiple = FALSE),
+                               radioButtons(inputId = "max_min_radio",
+                                            label = "",
+                                            choices = list("Max", "Min"),
+                                            selected = "Max"),
+                               sliderInput(inputId = "year_summ_1",
+                                           label = "Choose a Year:",
+                                           min = 2010,
+                                           max = 2017,
+                                           value = 2010,
+                                           sep = "")
+                             ),
+                             mainPanel(h2("Max and Min Fatalities Based on Age and Year"),
+                                       textOutput("summ_stat_1"),
+                                       plotOutput("states"))), 
+                             hr(),
+                             fluidRow(sidebarPanel(
+                               sliderInput("yr",
+                                           "Choose a Year:",
+                                           min = 2010,
+                                           max = 2017,
+                                           value = 1,
+                                           sep = ""),
+                               
+                               selectInput("st", "Select States:",
+                                           multiple = TRUE,
+                                           data_2010[-c(52:53), ]$state)),
+                               mainPanel(h2("State Rankings Per Year"),tableOutput("ranks")))
+                             ),
+                    
+                    tabPanel("Project Conclusion"))
+                    
 
-                                          h1("Fatal Car Crashes Per State"),
-                                          p("A bar graph showing number of death in different years and states based on age groups."))),
-                            hr(),
-                            fluidRow(sidebarPanel(
-                              sliderInput("years",
-                                          "Choose a Year:",
-                                          min = 2010,
-                                          max = 2017,
-                                          value = 1,
-                                          sep = ""),
-                              
-                              selectInput(inputId = "states", 
-                                          label = "Choose a state:", 
-                                          choices = (CrashData2010[-c(52:53), ]$state))),
-                              mainPanel(plotOutput("bargraph")))
-                   ),
-                   
-                   tabPanel("Line Graph",
-                            fluidRow(sidebarPanel(
-                              selectInput(inputId = "selected_state", 
-                                          label = "States", 
-                                          choices = sort(FatalCrashData$state), 
-                                          multiple = FALSE, selected = "AL"), 
-                              
-                              selectInput(inputId = "selected_ageGroup",
-                                          label = "Age Groups",
-                                          choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
-                                                      "35-44", "45-54", "55-64", "65-74", ">74", "unknown", 
-                                                      "total_killed"),
-                                          multiple = FALSE)),
-                              mainPanel(h3("         "), plotOutput("line_chart")))
-                   ),
-                   
-                   navbarMenu("Summary Stats",
-                              tabPanel("Case summary",
-                                       fluidRow(sidebarPanel(
-                                         selectInput(inputId = "sel_age_summ",
-                                                     label = "Age Group",
-                                                     choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
-                                                                 "35-44", "45-54", "55-64", "65-74", ">74", "unknown", 
-                                                                 "total_killed"),
-                                                     multiple = FALSE),
-                                         radioButtons(inputId = "max_min_radio",
-                                                      label = "Select",
-                                                      choices = list("Max", "Min"),
-                                                      selected = "Max"),
-                                         sliderInput(inputId = "year_summ_1",
-                                                     label = "Choose a year:",
-                                                     min = 2010,
-                                                     max = 2017,
-                                                     value = 2010,
-                                                     sep = "")
-                                       ),
-                                       mainPanel(h1("Max and Min fatalities based off of age and year"),textOutput("summ_stat_1"))), 
-                                       hr(),
-                                       fluidRow(sidebarPanel(
-                                         sliderInput("yr",
-                                                     "Choose a Year:",
-                                                     min = 2010,
-                                                     max = 2017,
-                                                     value = 1,
-                                                     sep = ""),
-                                         
-                                         selectInput("st", "Select States:",
-                                                     multiple = TRUE,
-                                                     data_2010[-c(52:53), ]$state)),
-                                         mainPanel(h1("State rankings per year"),tableOutput("ranks")))
-                                       ),
-                              tabPanel("Project conclusion")
-                              
-
-)))
+))
 

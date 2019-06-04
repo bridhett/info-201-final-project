@@ -17,11 +17,9 @@ source("R/summ_stat_first.R")
 source("R/interactive_map.R")
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+  
   output$plotly <- renderPlotly ({
     interactiveMap(input$y)
-  })
-  output$title <- renderText ({
-    paste("Fatal Car Crashes for Ages", input$ages, "in", input$year)
   })
   
   output$mapPlot <- renderPlot({
@@ -39,6 +37,11 @@ shinyServer(function(input, output) {
   output$summ_stat_1 <- renderText({
     d <- eval(parse(text = paste0("CrashData", input$year_summ_1)))
     first_summ_stat(input$max_min_radio, input$sel_age_summ, input$year_summ_1, d)
+  })
+  
+  output$states <- renderPlot ({
+    d <- eval(parse(text = paste0("CrashData", input$year_summ_1)))
+    getStates(first_summ_stat(input$max_min_radio, input$sel_age_summ, input$year_summ_1, d))
   })
   
   output$ranks <- renderTable({
