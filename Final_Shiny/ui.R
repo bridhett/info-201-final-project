@@ -14,11 +14,11 @@ source("R/bar_graph_function.R")
 # Define UI for application that draws a histogram
 shinyUI(navbarPage("Fatal Car Crashes in the USA",
                    tabPanel("Map",
-                            fluidRow(column(12,
-                                            h1("Nation Wide Fatal Car Crashes"),
-                                            p("The map "))),
-                            hr(),
-                            fluidRow(sidebarPanel(
+                            fluidRow(includeCSS("style.css"),
+                                     sidebarPanel(
+                                             h1("Nation Wide Fatal Car Crashes"),
+                                             p("The map "),
+                                             hr(),
                               sliderInput("year",
                                           "Choose a Year:",
                                           min = 2010,
@@ -30,7 +30,8 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                                           choices = c("<5", "5-9", "10-15", "16-20", "21-24", "25-34", 
                                                       "35-44", "45-54", "55-64", "65-74", ">74", 
                                                       "unknown"))),
-                              mainPanel(plotOutput("mapPlot")))
+                              mainPanel(textOutput("title"),
+                                        plotOutput("mapPlot")))
                    ),
                    
                    tabPanel("Bar Graph",

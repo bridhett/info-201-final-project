@@ -34,11 +34,9 @@ ggplot(data, aes(map_id = state)) +
     # map points to the fifty_states shape data
     geom_map(aes(fill = fatalities), map = fifty_states) + 
     expand_limits(x = fifty_states$long, y = fifty_states$lat) +
-    scale_fill_gradient(low= "yellow", high = "maroon", breaks = 
+    scale_fill_gradient(low= "light green", high = "#e57070", breaks = 
                           seq(min, max, floor((max-min)/4))) +
-    ggtitle(paste("Fatal Car Crashes for Ages", age_group, "in", year)) +
     theme(text=element_text(size=16,  family="serif"),
-          plot.title = element_text(hjust = 0.5),
           legend.position = "right", 
           panel.background = element_blank()) +
     labs(fill = "Fatalities", x = "", y = "") +
@@ -46,6 +44,3 @@ ggplot(data, aes(map_id = state)) +
     scale_x_continuous(breaks = NULL) + 
     scale_y_continuous(breaks = NULL) 
 }  
-
-getMap(2012, "25-34")
-

@@ -17,6 +17,10 @@ source("R/summ_stat_first.R")
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
+  output$title <- renderText ({
+    paste("Fatal Car Crashes for Ages", input$ages, "in", input$year)
+  })
+  
   output$mapPlot <- renderPlot({
     getMap(input$year, input$ages)
   })
