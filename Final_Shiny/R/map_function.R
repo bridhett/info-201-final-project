@@ -38,7 +38,8 @@ ggplot(data, aes(map_id = state)) +
                           seq(min, max, floor((max-min)/4))) +
     theme(text=element_text(size=16,  family="serif"),
           legend.position = "right", 
-          panel.background = element_blank()) +
+          panel.background = element_blank()
+          ) +
     labs(fill = "Fatalities", x = "", y = "") +
     coord_map() +
     scale_x_continuous(breaks = NULL) + 

@@ -31,7 +31,16 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                                                       "35-44", "45-54", "55-64", "65-74", ">74", 
                                                       "unknown"))),
                               mainPanel(textOutput("title"),
-                                        plotOutput("mapPlot")))
+                                        plotOutput("mapPlot"))),
+                            hr(),
+                            fluidRow(sidebarPanel(
+                                       sliderInput("y",
+                                                   "Choose a Year:",
+                                                   min = 2010,
+                                                   max = 2017,
+                                                   value = 1,
+                                                   sep = "")),
+                                     mainPanel(plotlyOutput("plotly")))
                    ),
                    
                    tabPanel("Bar Graph",
@@ -90,7 +99,7 @@ shinyUI(navbarPage("Fatal Car Crashes in the USA",
                                                      value = 2010,
                                                      sep = "")
                                        ),
-                                       mainPanel(h1("Max and Min fatalities based off of age and year"),p(textOutput("summ_stat_1")))), 
+                                       mainPanel(h1("Max and Min fatalities based off of age and year"),textOutput("summ_stat_1"))), 
                                        hr(),
                                        fluidRow(sidebarPanel(
                                          sliderInput("yr",

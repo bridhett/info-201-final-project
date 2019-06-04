@@ -14,9 +14,12 @@ source("R/map_function.R")
 source("R/format_data.R")
 source("R/rank_function.R")
 source("R/summ_stat_first.R")
+source("R/interactive_map.R")
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-  
+  output$plotly <- renderPlotly ({
+    interactiveMap(input$y)
+  })
   output$title <- renderText ({
     paste("Fatal Car Crashes for Ages", input$ages, "in", input$year)
   })
