@@ -18,8 +18,10 @@ h2 {
 
 p {
   text-align: center;
-  font-size: 14px;
+  font-size: 20px;
   color: #000000;
+  padding-left: 30%;
+  padding-right: 30%;
 }
 
 #summ_stat_1 {
