@@ -17,13 +17,13 @@ h2 {
 }
 
 p {
-  text-align: justify;
+  text-align: center;
   font-size: 14px;
   color: #000000;
 }
 
 #summ_stat_1 {
-  font-size: 28px;
+  font-size: 20px;
   color: #000000;
 }
 
@@ -45,6 +45,14 @@ p {
 li:hover {
   color: #000000;
   background-color: #FFFFFF;
+}
+
+li {
+  font-size: 16px;
+}
+
+a {
+  color: #FFFFFF;
 }
 
 .well {

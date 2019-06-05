@@ -19,7 +19,6 @@ first_summ_stat <- function(max_min, sel_age_grp, yr, d) {
   #d <- d[order(-(d[[sel_age_grp]])),]
   if(max_min == "Max") {
     d <- d[d[[sel_age_grp]] == max(d[[sel_age_grp]]),]
-    print(d)
     list <- as.vector(d$state)
     paste(paste0(list, collapse = ", "), "had the most deaths in", yr, "with",d[1,2])
   } else {
@@ -29,7 +28,6 @@ first_summ_stat <- function(max_min, sel_age_grp, yr, d) {
   }
 }
 
-first_summ_stat("Min", "<5", 2012, dooby_2010)
 
 getStates <- function(func){
   text <- func
@@ -42,6 +40,3 @@ getStates <- function(func){
   plot_usmap(include = text) +
   theme(panel.background = element_blank())
 }
-
-getStates(first_summ_stat("Min", "<5", 2012, dooby_2010))
-
